@@ -3,8 +3,8 @@ import pandas as pd
 import joblib
 import os
 from PIL import Image
-import urllib.parse # Import for URL encoding
-import random # Import for shuffling
+import urllib.parse
+import random
 
 # --- Configuration and Paths ---
 BASE_DIR = os.path.dirname(__file__)
@@ -74,10 +74,6 @@ def reset_quiz_state():
         del st.session_state.shuffled_questions_df # Clear shuffled questions to re-shuffle on next run
     if 'shuffled_options_map' in st.session_state:
         del st.session_state.shuffled_options_map # Clear shuffled options to re-shuffle on next run
-    
-    # Remove the following line:
-    # st.rerun() # Force a rerun to immediately switch views and re-shuffle
-
 
 # --- Main App Logic ---
 st.set_page_config(page_title="Harry Potter Character Quiz", layout="centered")
@@ -287,19 +283,41 @@ elif st.session_state.quiz_submitted:
     
     st.markdown("---")
     
-    # --- LinkedIn Share Link ---
+    # --- LinkedIn Share Section ---
+    st.markdown("### 📣 Share Your Result!")
+
     # The URL of your Streamlit app (where the quiz is hosted)
     # IMPORTANT: Replace "YOUR_STREAMLIT_APP_URL" with the actual URL of your deployed app!
-    app_url = "https://harry-potter-5efxzu8rjmh8kyeepnpbuz.streamlit.app/" # Placeholder: Replace with your actual deployed app URL
+    app_url = "https://harry-potter-5efxzu8rjmh8kyeepnpbuz.streamlit.app/" # Replace with your actual deployed app URL
     
     # Text to pre-fill in the LinkedIn share dialog
-    share_text = f"I just found out I'm a {predicted_character} in the Harry Potter universe with this fun quiz! Check it out and see who you are! #HarryPotter #Quiz #CharacterQuiz"
+    share_text_full = f"I just revealed my inner Harry Potter character: {st.session_state.predicted_character}! ✨ Find out who you are in the wizarding world with this fun quiz: {app_url} #HarryPotter #CharacterQuiz #WizardingWorld"
     
-    # Encode the text for URL safety
-    encoded_share_text = urllib.parse.quote(share_text)
-    encoded_app_url = urllib.parse.quote(app_url)
+    st.text_area("Copy and share this message:", share_text_full, height=100)
 
-    linkedin_share_url = f"https://www.linkedin.com/sharing/share-offsite/?url={encoded_app_url}&summary={encoded_share_text}"
+    # Copy to clipboard JS (injected into page)
+    # Using a unique key for the button to avoid issues with reruns
+    copy_code = f"""
+    <button onclick="navigator.clipboard.writeText(`{share_text_full}`); alert('Copied to clipboard!')" style="
+        padding: 10px 15px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        margin-top: 10px;
+        font-size: 16px;
+        cursor: pointer;
+    ">
+    📋 Copy to Clipboard
+    </button>
+    """
+    st.markdown(copy_code, unsafe_allow_html=True)
+    
+    # Encode the text and URL for LinkedIn share
+    encoded_app_url = urllib.parse.quote(app_url)
+    encoded_share_text_linkedin = urllib.parse.quote(share_text_full)
+
+    linkedin_share_url = f"https://www.linkedin.com/sharing/share-offsite/?url={encoded_app_url}&summary={encoded_share_text_linkedin}"
 
     st.markdown(f"""
         <div style="text-align: center; margin-top: 20px;">
