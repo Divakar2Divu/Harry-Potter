@@ -290,7 +290,7 @@ elif st.session_state.quiz_submitted:
     # --- LinkedIn Share Link ---
     # The URL of your Streamlit app (where the quiz is hosted)
     # IMPORTANT: Replace "YOUR_STREAMLIT_APP_URL" with the actual URL of your deployed app!
-    app_url = "YOUR_STREAMLIT_APP_URL" # Placeholder: Replace with your actual deployed app URL
+    app_url = "https://harry-potter-5efxzu8rjmh8kyeepnpbuz.streamlit.app/" # Placeholder: Replace with your actual deployed app URL
     
     # Text to pre-fill in the LinkedIn share dialog
     share_text = f"I just found out I'm a {predicted_character} in the Harry Potter universe with this fun quiz! Check it out and see who you are! #HarryPotter #Quiz #CharacterQuiz"
